@@ -2,8 +2,6 @@ import * as React from "react";
 import { Container, Slider, Footer, Overlay } from "./styles";
 import { Slide, SubSlide } from "../../components";
 import { Dimensions, StyleSheet, Animated } from "react-native";
-import Reanimated from "react-native-reanimated";
-//import {onS} from 'react-native-redash'
 const { width } = Dimensions.get("window");
 
 const slides = [
@@ -45,30 +43,31 @@ export default function Onboarding() {
     outputRange: slides.map((slide) => slide.color),
   });
 
-  const scrollRef = React.useRef<Reanimated.ScrollView>(null);
+  let scrollRef = React.createRef();
 
   return (
     <Container>
       <Slider style={{ backgroundColor }}>
-        <Reanimated.ScrollView
+        <Animated.ScrollView
           ref={scrollRef}
           horizontal
           snapToInterval={width}
           decelerationRate="fast"
           showsHorizontalScrollIndicator={false}
           bounces={false}
-          scrollEventThrottle={1}
+          scrollEventThrottle={16}
+          scrollToOverflowEnabled={true}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { x } } }],
             {
-              useNativeDriver: true,
+              useNativeDriver: false,
             }
           )}
         >
           {slides.map(({ title }, index) => (
             <Slide key={index} label={title} right={!!(index % 2)} />
           ))}
-        </Reanimated.ScrollView>
+        </Animated.ScrollView>
       </Slider>
 
       <Footer>
@@ -85,12 +84,16 @@ export default function Onboarding() {
             <SubSlide
               key={index}
               onPress={() => {
+                //@ts-ignore
                 if (scrollRef.current) {
-                  //console.log(scrollRef.current.scrollTo);
-                  scrollRef.current.getNode().scrollTo({
-                    x: width * index + 1,
-                    animated: true,
-                  });
+                  setTimeout(
+                    () =>
+                      //@ts-ignore
+                      scrollRef.current.scrollToEnd({
+                        animated: true,
+                      }),
+                    1
+                  );
                 }
               }}
               last={index === slides.length - 1}
