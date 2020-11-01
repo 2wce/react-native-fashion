@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "Munchie Fashion",
+    "description": "An homage to my supportive girlfriend & her passion for fashion",
     "slug": "munchie-fashion",
     "version": "0.0.1",
     "orientation": "portrait",
