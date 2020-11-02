@@ -16,6 +16,7 @@ export default function useCachedResources() {
         await Font.loadAsync({
           ...Ionicons.font,
           "SFPro Bold": require("../../assets/fonts/SFProDisplay-Bold.ttf"),
+          "SFPro SemiBold": require("../../assets/fonts/SFProDisplay-Semibold.ttf"),
           "SFPro Regular": require("../../assets/fonts/SFProDisplay-Regular.ttf"),
           "SFPro Light": require("../../assets/fonts/SFProDisplay-Light.ttf"),
         });

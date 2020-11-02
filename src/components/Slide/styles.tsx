@@ -1,4 +1,4 @@
-import { Dimensions, View, Text } from "react-native";
+import { Dimensions, View, Text, Image } from "react-native";
 import styled from "styled-components/native";
 
 const { width } = Dimensions.get("window");
@@ -19,4 +19,12 @@ export const Title = styled(Text)`
 export const TitleContainer = styled(View)`
   height: 100px;
   justify-content: center;
+`;
+
+export const Underlay = styled(View)`
+  justify-content: flex-end;
+`;
+
+export const StyledImage = styled(Image)`
+  border-bottom-right-radius: 75px;
 `;

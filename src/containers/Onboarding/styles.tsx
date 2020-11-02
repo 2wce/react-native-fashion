@@ -1,10 +1,10 @@
 import { Dimensions, View, Animated } from "react-native";
 import styled from "styled-components/native";
 
-const { height } = Dimensions.get("window");
+const { height, width } = Dimensions.get("window");
 
 export const SLIDER_HEIGHT = 0.61 * height;
-const BORDER_RADIUS = "75px";
+export const BORDER_RADIUS = "75px";
 
 export const Container = styled(View)`
   flex: 1;
@@ -20,9 +20,20 @@ export const Footer = styled(View)`
   flex: 1;
 `;
 
-export const Overlay = styled(Animated.View)`
+export const Overlay = styled(View)`
   flex: 1;
-  flex-direction: row;
   background-color: white;
   border-top-left-radius: ${BORDER_RADIUS};
+`;
+
+export const PaginationContainer = styled(View)`
+  height: ${BORDER_RADIUS};
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+`;
+
+export const SubSlideContainer = styled(Animated.View)`
+  flex: 1;
+  flex-direction: row;
 `;

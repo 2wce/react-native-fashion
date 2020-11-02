@@ -1,6 +1,13 @@
 import * as React from "react";
-import { Container, Slider, Footer, Overlay } from "./styles";
-import { Slide, SubSlide } from "../../components";
+import {
+  Container,
+  Slider,
+  Footer,
+  Overlay,
+  PaginationContainer,
+  SubSlideContainer,
+} from "./styles";
+import { Dot, Slide, SubSlide } from "../../components";
 import { Dimensions, StyleSheet, Animated, ScrollView } from "react-native";
 const { width } = Dimensions.get("window");
 
@@ -11,6 +18,7 @@ const slides = [
     description:
       "Confused about your outfit? Don't worry! Find the best outfit here!",
     subTitle: "Find Your Outfits",
+    image: require("../../../assets/1.png"),
   },
   {
     title: "Playful",
@@ -18,6 +26,7 @@ const slides = [
     description:
       "Hating the clothes in your wardrobe? Explore hundreds of outfit ideas",
     subTitle: "Hear it First. Wear it First",
+    image: require("../../../assets/2.png"),
   },
   {
     title: "Eccentric",
@@ -25,6 +34,7 @@ const slides = [
     description:
       "Create your individual & unique style and look amazing everyday",
     subTitle: "Your Style, Your Way",
+    image: require("../../../assets/3.png"),
   },
   {
     title: "Funky",
@@ -32,6 +42,7 @@ const slides = [
     description:
       "Discover the latest trends in fashion and explore your personality",
     subTitle: "Look Good, Feel Good",
+    image: require("../../../assets/4.png"),
   },
 ];
 
@@ -64,8 +75,13 @@ export default function Onboarding() {
             }
           )}
         >
-          {slides.map(({ title }, index) => (
-            <Slide key={index} label={title} right={!!(index % 2)} />
+          {slides.map(({ title, image }, index) => (
+            <Slide
+              key={index}
+              label={title}
+              image={image}
+              right={!!(index % 2)}
+            />
           ))}
         </Animated.ScrollView>
       </Slider>
@@ -74,27 +90,42 @@ export default function Onboarding() {
         <Animated.View
           style={{ ...StyleSheet.absoluteFillObject, backgroundColor }}
         />
-        <Overlay
-          style={{
-            width: width * slides.length,
-            transform: [{ translateX: Animated.multiply(x, -1) }],
-          }}
-        >
-          {slides.map(({ subTitle, description }, index) => (
-            <SubSlide
-              key={index}
-              onPress={() => {
-                if (scrollRef.current && index !== slides.length - 1) {
-                  scrollRef.current.scrollTo({
-                    x: (index + 1) * width,
-                    animated: true,
-                  });
-                }
-              }}
-              last={index === slides.length - 1}
-              {...{ subTitle, description }}
-            />
-          ))}
+        <Overlay>
+          <PaginationContainer
+            style={{
+              ...StyleSheet.absoluteFillObject,
+            }}
+          >
+            {slides.map((_, index) => (
+              <Dot
+                key={index}
+                index={index}
+                currentIndex={Animated.divide(x, width)}
+              />
+            ))}
+          </PaginationContainer>
+          <SubSlideContainer
+            style={{
+              transform: [{ translateX: Animated.multiply(x, -1) }],
+              width: width * slides.length,
+            }}
+          >
+            {slides.map(({ subTitle, description }, index) => (
+              <SubSlide
+                key={index}
+                onPress={() => {
+                  if (scrollRef.current && index !== slides.length - 1) {
+                    scrollRef.current.scrollTo({
+                      x: (index + 1) * width,
+                      animated: true,
+                    });
+                  }
+                }}
+                last={index === slides.length - 1}
+                {...{ subTitle, description }}
+              />
+            ))}
+          </SubSlideContainer>
         </Overlay>
       </Footer>
     </Container>
