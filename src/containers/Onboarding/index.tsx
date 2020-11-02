@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Container, Slider, Footer, Overlay } from "./styles";
 import { Slide, SubSlide } from "../../components";
-import { Dimensions, StyleSheet, Animated } from "react-native";
+import { Dimensions, StyleSheet, Animated, ScrollView } from "react-native";
 const { width } = Dimensions.get("window");
 
 const slides = [
@@ -43,7 +43,7 @@ export default function Onboarding() {
     outputRange: slides.map((slide) => slide.color),
   });
 
-  let scrollRef = React.createRef();
+  const scrollRef = React.useRef<ScrollView>(null);
 
   return (
     <Container>
@@ -84,16 +84,11 @@ export default function Onboarding() {
             <SubSlide
               key={index}
               onPress={() => {
-                //@ts-ignore
-                if (scrollRef.current) {
-                  setTimeout(
-                    () =>
-                      //@ts-ignore
-                      scrollRef.current.scrollToEnd({
-                        animated: true,
-                      }),
-                    1
-                  );
+                if (scrollRef.current && index !== slides.length - 1) {
+                  scrollRef.current.scrollTo({
+                    x: (index + 1) * width,
+                    animated: true,
+                  });
                 }
               }}
               last={index === slides.length - 1}
