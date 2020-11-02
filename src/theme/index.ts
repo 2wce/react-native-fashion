@@ -16,9 +16,9 @@ const theme = {
     "64px",
   ],
   fontFamily: {
-    normal: "Rubik_400Regular",
-    bold: "Rubik_700Bold",
-    lighter: "Rubik_300Light",
+    normal: "SFPro Regular",
+    bold: "SFPro Bold",
+    lighter: "SFPro Light",
   },
   navBarHeight: 48,
   shadow: {
