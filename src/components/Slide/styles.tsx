@@ -1,5 +1,6 @@
-import { Dimensions, View, Text } from "react-native";
+import { Dimensions, View, Image } from "react-native";
 import styled from "styled-components/native";
+import { Text } from "../../theme";
 
 const { width } = Dimensions.get("window");
 
@@ -9,14 +10,18 @@ export const Container = styled(View)`
 `;
 
 export const Title = styled(Text)`
-  font-size: 80px;
-  font-family: System;
   color: white;
   text-align: center;
-  line-height: 80px;
 `;
 
 export const TitleContainer = styled(View)`
   height: 100px;
   justify-content: center;
 `;
+
+export const Underlay = styled(View)`
+  justify-content: flex-end;
+  align-items: center;
+`;
+
+export const StyledImage = styled(Image)``;

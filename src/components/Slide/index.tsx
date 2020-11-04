@@ -2,6 +2,7 @@ import * as React from "react";
 import { Dimensions } from "react-native";
 import { SLIDER_HEIGHT } from "../../containers/Onboarding/styles";
 import { Container, Title, TitleContainer } from "./styles";
+import { Text } from "../../theme";
 
 export interface SlideProps {
   label: string;
@@ -20,6 +21,7 @@ export default function Slide({ label, right }: SlideProps) {
     },
     { rotate: right ? "-90deg" : "90deg" },
   ];
+
   return (
     <Container>
       <TitleContainer
@@ -27,7 +29,7 @@ export default function Slide({ label, right }: SlideProps) {
           transform,
         }}
       >
-        <Title>{label}</Title>
+        <Title variant="hero">{label}</Title>
       </TitleContainer>
     </Container>
   );

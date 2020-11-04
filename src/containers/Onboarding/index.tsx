@@ -1,41 +1,33 @@
 import * as React from "react";
-import { Container, Slider, Footer, Overlay } from "./styles";
-import { Slide, SubSlide } from "../../components";
-import { Dimensions, StyleSheet, Animated } from "react-native";
+import {
+  Container,
+  Slider,
+  Footer,
+  Overlay,
+  PaginationContainer,
+  SubSlideContainer,
+  Underlay,
+  StyledImage,
+} from "./styles";
+import { Dot, Slide, SubSlide } from "../../components";
+import { Dimensions, StyleSheet, Animated, ScrollView } from "react-native";
+import { slides } from "./data";
+import theme from "../../theme";
+import { RootStackParamList } from "../../types";
+import { StackNavigationProp } from "@react-navigation/stack";
+
 const { width } = Dimensions.get("window");
+const {
+  borderRadii: { xl },
+} = theme;
 
-const slides = [
-  {
-    title: "Relaxed",
-    color: "#BFEAF5",
-    description:
-      "Confused about your outfit? Don't worry! Find the best outfit here!",
-    subTitle: "Find Your Outfits",
-  },
-  {
-    title: "Playful",
-    color: "#BEECC4",
-    description:
-      "Hating the clothes in your wardrobe? Explore hundreds of outfit ideas",
-    subTitle: "Hear it First. Wear it First",
-  },
-  {
-    title: "Eccentric",
-    color: "#FFE4D9",
-    description:
-      "Create your individual & unique style and look amazing everyday",
-    subTitle: "Your Style, Your Way",
-  },
-  {
-    title: "Funky",
-    color: "#FFDDDD",
-    description:
-      "Discover the latest trends in fashion and explore your personality",
-    subTitle: "Look Good, Feel Good",
-  },
-];
+type OnBoardingNavProps = StackNavigationProp<RootStackParamList, "OnBoarding">;
 
-export default function Onboarding() {
+type OnBoardingProps = {
+  navigation: OnBoardingNavProps;
+};
+
+const Onboarding: React.FC<OnBoardingProps> = ({ navigation }) => {
   const x = React.useRef(new Animated.Value(0)).current;
 
   const backgroundColor = x.interpolate({
@@ -43,11 +35,37 @@ export default function Onboarding() {
     outputRange: slides.map((slide) => slide.color),
   });
 
-  let scrollRef = React.createRef();
+  const scrollRef = React.useRef<ScrollView>(null);
 
   return (
     <Container>
       <Slider style={{ backgroundColor }}>
+        {slides.map(({ image }, index) => {
+          const opacity = x.interpolate({
+            inputRange: [
+              (index - 0.5) * width,
+              index * width,
+              (index + 0.5) * width,
+            ],
+            outputRange: [0, 1, 0],
+            extrapolate: "clamp",
+          });
+
+          return (
+            <Underlay
+              style={{ ...StyleSheet.absoluteFillObject, opacity }}
+              key={index}
+            >
+              <StyledImage
+                source={image.src}
+                style={{
+                  width: width - xl,
+                  height: ((width - xl) * image.height) / image.width,
+                }}
+              />
+            </Underlay>
+          );
+        })}
         <Animated.ScrollView
           ref={scrollRef}
           horizontal
@@ -74,34 +92,52 @@ export default function Onboarding() {
         <Animated.View
           style={{ ...StyleSheet.absoluteFillObject, backgroundColor }}
         />
-        <Overlay
-          style={{
-            width: width * slides.length,
-            transform: [{ translateX: Animated.multiply(x, -1) }],
-          }}
-        >
-          {slides.map(({ subTitle, description }, index) => (
-            <SubSlide
-              key={index}
-              onPress={() => {
-                //@ts-ignore
-                if (scrollRef.current) {
-                  setTimeout(
-                    () =>
-                      //@ts-ignore
-                      scrollRef.current.scrollToEnd({
+        <Overlay>
+          <PaginationContainer
+            style={{
+              ...StyleSheet.absoluteFillObject,
+            }}
+          >
+            {slides.map((_, index) => (
+              <Dot
+                key={index}
+                index={index}
+                currentIndex={Animated.divide(x, width)}
+              />
+            ))}
+          </PaginationContainer>
+          <SubSlideContainer
+            style={{
+              transform: [{ translateX: Animated.multiply(x, -1) }],
+              width: width * slides.length,
+            }}
+          >
+            {slides.map(({ subTitle, description }, index) => {
+              const last = index === slides.length - 1;
+              return (
+                <SubSlide
+                  key={index}
+                  onPress={() => {
+                    if (last) {
+                      navigation.navigate("Welcome");
+                    }
+
+                    if (scrollRef.current && !last) {
+                      scrollRef.current.scrollTo({
+                        x: (index + 1) * width,
                         animated: true,
-                      }),
-                    1
-                  );
-                }
-              }}
-              last={index === slides.length - 1}
-              {...{ subTitle, description }}
-            />
-          ))}
+                      });
+                    }
+                  }}
+                  {...{ subTitle, description, last }}
+                />
+              );
+            })}
+          </SubSlideContainer>
         </Overlay>
       </Footer>
     </Container>
   );
-}
+};
+
+export default Onboarding;

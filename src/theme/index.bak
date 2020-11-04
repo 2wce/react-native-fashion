@@ -1,0 +1,67 @@
+// NB! If you make changes to this file, remember to update styled.d.ts with your changes.
+const theme = {
+  fontSizes: [12, 14, 16, 20, 24, 28, 32, 64],
+  // Spacing scale taken from @chakra-ui - https://chakra-ui.com/theme
+  space: [
+    "0",
+    "4px",
+    "8px",
+    "12px",
+    "16px",
+    "20px",
+    "24px",
+    "32px",
+    "40px",
+    "48px",
+    "64px",
+  ],
+  fontFamily: {
+    normal: "SFPro Regular",
+    bold: "SFPro Bold",
+    semibold: "SFPro SemiBold",
+    lighter: "SFPro Light",
+  },
+  navBarHeight: 48,
+  shadow: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 1,
+    elevation: 1,
+  },
+  colors: {
+    transparentText: "rgba(12, 13, 52, 0.7)",
+    text: "#0C0D34",
+    background: "#FFF",
+    grey: "rgba(12, 13, 53, 0.05)",
+    sliderGrey: "#F4F0EF",
+    secondary: "#64B4BE",
+    primary: "#2CB9B0",
+    modes: {
+      dark: {
+        text: "#FFF",
+        background: "#0A0A0A",
+        primary: "#004B8C",
+        secondary: "#595959",
+      },
+    },
+  },
+  radii: {
+    s: 4,
+    m: 10,
+    l: 25,
+    xl: 75,
+  },
+};
+
+const modes = Object.keys(theme.colors.modes).map((key) => key);
+
+modes.unshift("default");
+
+const BORDER_RADIUS = "75";
+export type Theme = typeof theme;
+
+export { theme, modes, BORDER_RADIUS };
