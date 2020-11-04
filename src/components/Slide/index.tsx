@@ -1,23 +1,17 @@
 import * as React from "react";
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions } from "react-native";
 import { SLIDER_HEIGHT } from "../../containers/Onboarding/styles";
-import {
-  Container,
-  StyledImage,
-  Title,
-  TitleContainer,
-  Underlay,
-} from "./styles";
+import { Container, Title, TitleContainer } from "./styles";
+import { Text } from "../../theme";
 
 export interface SlideProps {
   label: string;
   right?: boolean;
-  image: any;
 }
 
 const { width } = Dimensions.get("window");
 
-export default function Slide({ label, right, image }: SlideProps) {
+export default function Slide({ label, right }: SlideProps) {
   const transform = [
     {
       translateY: (SLIDER_HEIGHT - 100) / 2,
@@ -27,24 +21,15 @@ export default function Slide({ label, right, image }: SlideProps) {
     },
     { rotate: right ? "-90deg" : "90deg" },
   ];
+
   return (
     <Container>
-      <Underlay style={{ ...StyleSheet.absoluteFillObject }}>
-        <StyledImage
-          source={image}
-          style={{
-            ...StyleSheet.absoluteFillObject,
-            width: undefined,
-            height: undefined,
-          }}
-        />
-      </Underlay>
       <TitleContainer
         style={{
           transform,
         }}
       >
-        <Title>{label}</Title>
+        <Title variant="hero">{label}</Title>
       </TitleContainer>
     </Container>
   );

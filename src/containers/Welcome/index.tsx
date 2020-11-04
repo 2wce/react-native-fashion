@@ -1,12 +1,17 @@
 import * as React from "react";
-import { View, Text } from "react-native";
+import { Box } from "../../theme";
 
 export interface WelcomeProps {}
 
 export default function Welcome(props: WelcomeProps) {
   return (
-    <View>
-      <Text>Welcome</Text>
-    </View>
+    <Box flex={1}>
+      <Box
+        flex={1}
+        borderBottomRightRadius="xl"
+        backgroundColor="sliderGrey"
+      ></Box>
+      <Box flex={1} borderBottomLeftRadius="xl"></Box>
+    </Box>
   );
 }

@@ -1,6 +1,7 @@
 import * as React from "react";
 import Button from "../Button";
 import { Container, Description, SubTitle } from "./styles";
+import { Text } from "../../theme";
 
 export interface SubSlideProps {
   subTitle: string;
@@ -17,8 +18,8 @@ export default function SubSlide({
 }: SubSlideProps) {
   return (
     <Container>
-      <SubTitle>{subTitle}</SubTitle>
-      <Description>{description}</Description>
+      <SubTitle variant="subTitle">{subTitle}</SubTitle>
+      <Description variant="body">{description}</Description>
       <Button
         onPress={onPress}
         title={last ? "Let's get started" : "Next"}

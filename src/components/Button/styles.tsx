@@ -1,11 +1,15 @@
-import { View } from "react-native";
-import { RectButton, RectButtonProperties } from "react-native-gesture-handler";
-//import { RectButton } from "react-native-gesture-handler";
+import { View, Text } from "react-native";
+import { RectButton } from "react-native-gesture-handler";
 import styled from "styled-components/native";
+import theme from "../../theme";
 
 interface Props {
   variant: "default" | "primary";
 }
+
+const {
+  colors: { grey, primary, text },
+} = theme;
 
 export const Container = styled(View)<Props>`
   justify-content: center;
@@ -14,7 +18,7 @@ export const Container = styled(View)<Props>`
   height: 50px;
   width: 245px;
   background-color: ${(props) =>
-    props.variant === "primary" ? "#2CB9B0" : "rgba(12, 13, 52, 0.05)"};
+    props.variant === "primary" ? primary : grey};
 `;
 
 export const StyledButton = styled(RectButton)`
@@ -25,8 +29,8 @@ export const StyledButton = styled(RectButton)`
   width: 245px;
 `;
 
-export const Title = styled.Text<Props>`
+export const Title = styled(Text)<Props>`
   font-size: 15px;
   font-weight: 400;
-  color: ${(props) => (props.variant === "primary" ? "white" : "#0c0d34")};
+  color: ${(props) => (props.variant === "primary" ? "white" : text)};
 `;

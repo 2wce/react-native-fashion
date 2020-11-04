@@ -6,47 +6,28 @@ import {
   Overlay,
   PaginationContainer,
   SubSlideContainer,
+  Underlay,
+  StyledImage,
 } from "./styles";
 import { Dot, Slide, SubSlide } from "../../components";
 import { Dimensions, StyleSheet, Animated, ScrollView } from "react-native";
+import { slides } from "./data";
+import theme from "../../theme";
+import { RootStackParamList } from "../../types";
+import { StackNavigationProp } from "@react-navigation/stack";
+
 const { width } = Dimensions.get("window");
+const {
+  borderRadii: { xl },
+} = theme;
 
-const slides = [
-  {
-    title: "Relaxed",
-    color: "#BFEAF5",
-    description:
-      "Confused about your outfit? Don't worry! Find the best outfit here!",
-    subTitle: "Find Your Outfits",
-    image: require("../../../assets/1.png"),
-  },
-  {
-    title: "Playful",
-    color: "#BEECC4",
-    description:
-      "Hating the clothes in your wardrobe? Explore hundreds of outfit ideas",
-    subTitle: "Hear it First. Wear it First",
-    image: require("../../../assets/2.png"),
-  },
-  {
-    title: "Eccentric",
-    color: "#FFE4D9",
-    description:
-      "Create your individual & unique style and look amazing everyday",
-    subTitle: "Your Style, Your Way",
-    image: require("../../../assets/3.png"),
-  },
-  {
-    title: "Funky",
-    color: "#FFDDDD",
-    description:
-      "Discover the latest trends in fashion and explore your personality",
-    subTitle: "Look Good, Feel Good",
-    image: require("../../../assets/4.png"),
-  },
-];
+type OnBoardingNavProps = StackNavigationProp<RootStackParamList, "OnBoarding">;
 
-export default function Onboarding() {
+type OnBoardingProps = {
+  navigation: OnBoardingNavProps;
+};
+
+const Onboarding: React.FC<OnBoardingProps> = ({ navigation }) => {
   const x = React.useRef(new Animated.Value(0)).current;
 
   const backgroundColor = x.interpolate({
@@ -59,6 +40,32 @@ export default function Onboarding() {
   return (
     <Container>
       <Slider style={{ backgroundColor }}>
+        {slides.map(({ image }, index) => {
+          const opacity = x.interpolate({
+            inputRange: [
+              (index - 0.5) * width,
+              index * width,
+              (index + 0.5) * width,
+            ],
+            outputRange: [0, 1, 0],
+            extrapolate: "clamp",
+          });
+
+          return (
+            <Underlay
+              style={{ ...StyleSheet.absoluteFillObject, opacity }}
+              key={index}
+            >
+              <StyledImage
+                source={image.src}
+                style={{
+                  width: width - xl,
+                  height: ((width - xl) * image.height) / image.width,
+                }}
+              />
+            </Underlay>
+          );
+        })}
         <Animated.ScrollView
           ref={scrollRef}
           horizontal
@@ -75,13 +82,8 @@ export default function Onboarding() {
             }
           )}
         >
-          {slides.map(({ title, image }, index) => (
-            <Slide
-              key={index}
-              label={title}
-              image={image}
-              right={!!(index % 2)}
-            />
+          {slides.map(({ title }, index) => (
+            <Slide key={index} label={title} right={!!(index % 2)} />
           ))}
         </Animated.ScrollView>
       </Slider>
@@ -110,24 +112,32 @@ export default function Onboarding() {
               width: width * slides.length,
             }}
           >
-            {slides.map(({ subTitle, description }, index) => (
-              <SubSlide
-                key={index}
-                onPress={() => {
-                  if (scrollRef.current && index !== slides.length - 1) {
-                    scrollRef.current.scrollTo({
-                      x: (index + 1) * width,
-                      animated: true,
-                    });
-                  }
-                }}
-                last={index === slides.length - 1}
-                {...{ subTitle, description }}
-              />
-            ))}
+            {slides.map(({ subTitle, description }, index) => {
+              const last = index === slides.length - 1;
+              return (
+                <SubSlide
+                  key={index}
+                  onPress={() => {
+                    if (last) {
+                      navigation.navigate("Welcome");
+                    }
+
+                    if (scrollRef.current && !last) {
+                      scrollRef.current.scrollTo({
+                        x: (index + 1) * width,
+                        animated: true,
+                      });
+                    }
+                  }}
+                  {...{ subTitle, description, last }}
+                />
+              );
+            })}
           </SubSlideContainer>
         </Overlay>
       </Footer>
     </Container>
   );
-}
+};
+
+export default Onboarding;
