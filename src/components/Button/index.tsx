@@ -2,7 +2,7 @@ import * as React from "react";
 import { Container, StyledButton, Title } from "./styles";
 
 export interface ButtonProps {
-  variant: "default" | "primary";
+  variant: "default" | "primary" | "transparent";
   title: string;
   onPress: () => void;
 }
