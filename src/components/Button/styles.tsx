@@ -4,11 +4,11 @@ import styled from "styled-components/native";
 import theme from "../../theme";
 
 interface Props {
-  variant: "default" | "primary";
+  variant: "default" | "primary" | "transparent";
 }
 
 const {
-  colors: { grey, primary, text },
+  colors: { grey, primary, text, white, transparentGrey },
 } = theme;
 
 export const Container = styled(View)<Props>`
@@ -17,8 +17,12 @@ export const Container = styled(View)<Props>`
   border-radius: 25px;
   height: 50px;
   width: 245px;
-  background-color: ${(props) =>
-    props.variant === "primary" ? primary : grey};
+  background-color: ${({ variant }) =>
+    variant === "primary"
+      ? primary
+      : variant === "transparent"
+      ? transparentGrey
+      : grey};
 `;
 
 export const StyledButton = styled(RectButton)`
@@ -32,5 +36,5 @@ export const StyledButton = styled(RectButton)`
 export const Title = styled(Text)<Props>`
   font-size: 15px;
   font-weight: 400;
-  color: ${(props) => (props.variant === "primary" ? "white" : text)};
+  color: ${(props) => (props.variant === "primary" ? white : text)};
 `;

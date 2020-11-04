@@ -16,6 +16,7 @@ const palette = {
 const theme = createTheme({
   colors: {
     text: palette.black,
+    debug: "red",
     transparentText: palette.transparentBlack,
     grey: palette.grey,
     transparentGrey: palette.transparentGrey,
