@@ -8,7 +8,7 @@ interface Props {
 }
 
 const {
-  colors: { grey, primary, text },
+  colors: { grey, primary, text, white },
 } = theme;
 
 export const Container = styled(View)<Props>`
@@ -32,5 +32,5 @@ export const StyledButton = styled(RectButton)`
 export const Title = styled(Text)<Props>`
   font-size: 15px;
   font-weight: 400;
-  color: ${(props) => (props.variant === "primary" ? "white" : text)};
+  color: ${(props) => (props.variant === "primary" ? white : text)};
 `;
