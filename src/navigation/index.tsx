@@ -7,7 +7,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
 import { ColorSchemeName } from "react-native";
 
-import { NotFound, OnBoarding } from "../containers";
+import { NotFound, OnBoarding, Welcome } from "../containers";
 import { RootStackParamList } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 
@@ -36,6 +36,7 @@ function RootNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="OnBoarding" component={OnBoarding} />
+      <Stack.Screen name="Welcome" component={Welcome} />
       <Stack.Screen
         name="NotFound"
         component={NotFound}
